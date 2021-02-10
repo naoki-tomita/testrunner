@@ -1,4 +1,5 @@
 type Runnable = () => void | Promise<void>;
+type SyncRunnable = () => void;
 
 interface Test {
   name: string;
@@ -19,7 +20,7 @@ const suite: Spec = {
   execution: [],
 };
 let currentSpec: Spec = suite;
-export async function describe(name: string, fn: Runnable) {
+export async function describe(name: string, fn: SyncRunnable) {
   const spec = {
     name,
     before: [],
@@ -31,7 +32,7 @@ export async function describe(name: string, fn: Runnable) {
   const last = currentSpec;
   currentSpec.execution.push(spec);
   currentSpec = spec;
-  await fn();
+  fn();
   currentSpec = last;
 }
 
